@@ -172,7 +172,8 @@ inline bool TickInfo::has_rejection_to_warn() const {
 }
 
 inline Environment* Environment::GetCurrent(v8::Isolate* isolate) {
-  if (UNLIKELY(!isolate->InContext())) return nullptr;
+  if (UNLIKELY(!isolate->InContext() ||
+               isolate->IsExecutionTerminating())) return nullptr;
   v8::HandleScope handle_scope(isolate);
   return GetCurrent(isolate->GetCurrentContext());
 }
